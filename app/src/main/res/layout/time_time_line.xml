@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
                 android:id="@+id/id_root"
                 android:background="#00ff00"
                 android:splitMotionEvents="false">
@@ -14,6 +14,9 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_toRightOf="@+id/id_iv_start"
+            android:gravity="center_vertical"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
     >
 
     </LinearLayout>
@@ -30,7 +33,7 @@
     <ImageView
             android:id="@+id/id_iv_end"
             android:layout_width="30dp"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:src="@drawable/back"
             android:scaleType="centerInside"
             android:background="#ffffff"

@@ -16,7 +16,7 @@ class BitmapContentView @JvmOverloads constructor(
     companion object {
         private val TAG = BitmapContentView::class.java.simpleName
 
-        private const val DEFAULT_BITMAP_DP_SIZE = 50F
+        private const val DEFAULT_BITMAP_DP_SIZE = 60F
 
         private const val DEFAULT_DP_PADDING = 0F
 

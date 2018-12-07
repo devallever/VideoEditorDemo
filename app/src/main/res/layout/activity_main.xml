@@ -8,7 +8,9 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity"
         android:background="#1b1b1b"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <com.allever.videoeditordemo.BitmapContentView
             android:id="@+id/id_my_view"
@@ -20,13 +22,22 @@
             android:id="@+id/id_add_bitmap"
             android:text="add bitmap"/>
 
-    <com.allever.videoeditordemo.TimeLineView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/id_time_line_view"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:background="#ff0000"
-            android:layout_marginLeft="100dp"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="60dp"
+    android:layout_marginTop="10dp"
+    android:background="#ccaa00"
+                  android:clipChildren="false"
+                  android:clipToPadding="false"
+    >
+        <com.allever.videoeditordemo.TimeLineView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/id_time_line_view"
+                android:layout_width="wrap_content"
+                android:layout_height="66dp"
+                android:background="#ff0000"
+                android:layout_marginLeft="100dp"/>
+    </LinearLayout>
+
 
     <!--<LinearLayout-->
     <!--android:id="@+id/id_ll_time_line_view_container"-->

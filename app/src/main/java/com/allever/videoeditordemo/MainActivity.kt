@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
         val timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
         val bcv = BitmapContentView(this)
-        val bitmap2 = BitmapFactory.decodeResource(resources, R.mipmap.logo)
+        val bitmap2 = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap2)
         bcv.addData(bitmap2)
         timeLineView.addContentView(bcv)
