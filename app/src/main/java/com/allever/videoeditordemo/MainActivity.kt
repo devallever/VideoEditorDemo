@@ -18,10 +18,12 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initData()
+
         mMyView = findViewById(R.id.id_my_view)
         val bitmapList = mutableListOf<Bitmap>()
-        val bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
-        bitmapList.add(bitmap)
+        val aBitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        bitmapList.add(aBitmap)
         mMyView?.setData(bitmapList)
 
 //        mMyView?.setPadding(10f)
@@ -30,13 +32,39 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
         findViewById<Button>(R.id.id_add_bitmap).setOnClickListener(this)
 
-        val timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
-        val bcv = BitmapContentView(this)
-        val bitmap2 = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
-        bcv.addData(bitmap2)
-        bcv.addData(bitmap2)
+
+        //1
+        var timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
+        var bcv = BitmapContentView(this)
+        var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
 
+
+        //2
+        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_2)
+        bcv = BitmapContentView(this)
+        bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        timeLineView.addContentView(bcv)
+
+        //3
+        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_3)
+        bcv = BitmapContentView(this)
+        bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        timeLineView.addContentView(bcv)
+
+        //3
+        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_4)
+        bcv = BitmapContentView(this)
+        bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        timeLineView.addContentView(bcv)
 
 //        val timeLineView2 = findViewById<TimeLineView>(R.id.id_time_line_view2)
 //        val bcv2 = BitmapContentView(this)
@@ -47,6 +75,10 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
     override fun onClick(v: View?) {
         val bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
         mMyView?.addData(bitmap)
+    }
+
+    private fun initData(){
+
     }
 
 }

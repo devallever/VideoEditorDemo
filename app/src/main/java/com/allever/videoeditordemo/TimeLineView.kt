@@ -158,15 +158,15 @@ class TimeLineView @JvmOverloads constructor(
             mContentContainer?.background = mBackground
 
             //修改控件位置
-            modifyMarginStart( - (mIvStart?.width?:0))
+//            modifyMarginStart( - (mIvStart?.width?:0))
 
         }else{
             //隐藏边框
-            mIvEnd?.visibility = View.GONE
-            mIvStart?.visibility = View.GONE
+            mIvEnd?.visibility = View.INVISIBLE
+            mIvStart?.visibility = View.INVISIBLE
             mContentContainer?.background = null
 
-            modifyMarginStart(mIvStart?.width?: 0)
+//            modifyMarginStart(mIvStart?.width?: 0)
         }
     }
 
