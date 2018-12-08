@@ -87,7 +87,6 @@ class TimeLineView @JvmOverloads constructor(
 //                        mOffsetX = (currentRawX - mOriginRawX).toInt()
 //                        mOffsetX = offsetX.toInt()
 
-                        mLastRawX = currentRawX
                         Log.d(TAG, "offsetX = $offsetX")
 
                         //修改控件内容器宽度
@@ -105,10 +104,9 @@ class TimeLineView @JvmOverloads constructor(
                             mContentContainer?.layoutParams = lp
                         }
 
-                        //
+                        mLastRawX = currentRawX
                     }
                 }
-                return true
             }
 
             mIvStart -> {
@@ -121,8 +119,6 @@ class TimeLineView @JvmOverloads constructor(
                     MotionEvent.ACTION_MOVE -> {
                         val currentRawX = event.rawX
                         val offsetX = currentRawX - mLastRawX
-
-                        mLastRawX = currentRawX
 
 //                        //修改控件内容器宽度
                         val containerWidth = mContentContainer?.width
@@ -139,14 +135,15 @@ class TimeLineView @JvmOverloads constructor(
                             modifyMarginStart(offsetX.toInt())
                         }
 
+                        mLastRawX = currentRawX
                     }
                 }
-                return true
             }
         }
-
-
-        return false
+        //处理滑动冲突，屏蔽父控件拦截onTouch事件
+        parent.requestDisallowInterceptTouchEvent(true)
+        Log.d(TAG, "onTouch() return true")
+        return true
     }
 
     fun addContentView(view: View?){
@@ -190,6 +187,13 @@ class TimeLineView @JvmOverloads constructor(
 
         layoutParams = thisLp
 
+    }
+
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val result = super.onTouchEvent(event)
+        Log.d(TAG, "onTouchEvent() return $result")
+        return result
     }
 
 }

@@ -1,10 +1,11 @@
-package com.allever.videoeditordemo.test
+package com.allever.videoeditordemo
 
 import android.content.Context
 import android.graphics.Canvas
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.LinearLayout
 
@@ -16,6 +17,11 @@ class MyLinearLayout : LinearLayout {
         defStyleAttr
     ) {
         initView()
+    }
+
+
+    companion object {
+        private val TAG = MyLinearLayout::class.java.simpleName
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -34,6 +40,11 @@ class MyLinearLayout : LinearLayout {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+    }
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val result = super.onTouchEvent(event)
+        Log.d(TAG, "onTouchEvent() return $result")
+        return result
     }
 }
