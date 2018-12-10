@@ -68,6 +68,18 @@ class TimeLineView @JvmOverloads constructor(
         }
     }
 
+    private var mIvStartMaxTranslationX = -1
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val mContentContainerWidth = mContentContainer?.width
+        Log.d(TAG, "onMeasure() mContentContainerWidth = $mContentContainerWidth")
+        if (mIvStartMaxTranslationX == -1 && mContentContainerWidth != 0){
+            mIvStartMaxTranslationX = mContentContainerWidth?: 0
+        }
+        Log.d(TAG, "onMeasure() mIvStartMaxTranslationX = $mIvStartMaxTranslationX")
+
+    }
+
     private var mOffsetX = 0
     private var mLastRawX = 0F
     private var mOriginRawX = 0F
@@ -103,9 +115,8 @@ class TimeLineView @JvmOverloads constructor(
                         if (width > 0){
                             lp.width = width.toInt()
                             mContentContainer?.layoutParams = lp
+                            mLastRawX = currentRawX
                         }
-
-                        mLastRawX = currentRawX
                     }
                 }
             }
@@ -129,7 +140,7 @@ class TimeLineView @JvmOverloads constructor(
                         //-offsetX：与右边箭头相反
                         val width = lp?.width!! + (-offsetX)
                         //处理滑动到右边箭头后禁止继续滑动
-                        if (width > 0){
+                        if (width > 0 && width <= mIvStartMaxTranslationX){
                             lp.width = width.toInt()
                             mContentContainer?.layoutParams = lp
                             //修改控件位置
@@ -141,10 +152,9 @@ class TimeLineView @JvmOverloads constructor(
                             val marginStart = parentLp?.leftMargin ?: 0
                             Log.d(TAG, "parent margin Start = $marginStart")
                             modifyMarginStart(parent,offsetX.toInt() )
-
+                            mLastRawX = currentRawX
                         }
 
-                        mLastRawX = currentRawX
                     }
                 }
             }
