@@ -115,8 +115,8 @@ class TimeLineView @JvmOverloads constructor(
                         if (width > 0){
                             lp.width = width.toInt()
                             mContentContainer?.layoutParams = lp
-                            mLastRawX = currentRawX
                         }
+                        mLastRawX = currentRawX
                     }
                 }
             }
@@ -135,12 +135,24 @@ class TimeLineView @JvmOverloads constructor(
 //                        //修改控件内容器宽度
                         val containerWidth = mContentContainer?.width
                         val lp = mContentContainer?.layoutParams
-
                         lp?.width = containerWidth
                         //-offsetX：与右边箭头相反
                         val width = lp?.width!! + (-offsetX)
+
                         //处理滑动到右边箭头后禁止继续滑动
-                        if (width > 0 && width <= mIvStartMaxTranslationX){
+                        if (width > 0 ){
+                            val isLeftTranslation = (mLastRawX - currentRawX) > 0
+//                        if (isLeftTranslation){
+//                            Log.d(TAG, "onTouch() 左移")
+//                        }else{
+//                            Log.d(TAG, "onTouch() 右移")
+//                        }
+                            //如果是向左移动，需要判断是否超过向左移动的最大值
+                            if (isLeftTranslation && width > mIvStartMaxTranslationX){
+                                //左移
+                                parent.requestDisallowInterceptTouchEvent(false)
+                                return false
+                            }
                             lp.width = width.toInt()
                             mContentContainer?.layoutParams = lp
                             //修改控件位置
@@ -152,9 +164,8 @@ class TimeLineView @JvmOverloads constructor(
                             val marginStart = parentLp?.leftMargin ?: 0
                             Log.d(TAG, "parent margin Start = $marginStart")
                             modifyMarginStart(parent,offsetX.toInt() )
-                            mLastRawX = currentRawX
                         }
-
+                        mLastRawX = currentRawX
                     }
                 }
             }
