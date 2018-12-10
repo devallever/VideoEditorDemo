@@ -135,7 +135,7 @@ class TimeLineView @JvmOverloads constructor(
                             //修改控件位置
 //                            modifyMarginStart(this, offsetX.toInt())
 
-                            //修改父控件MarginStart
+                            //修改父控件MarginStart，实现整体左移，不需要修改该控件的位置了
                             val parent = parent as? ViewGroup
                             val parentLp = parent?.layoutParams as? MarginLayoutParams
                             val marginStart = parentLp?.leftMargin ?: 0

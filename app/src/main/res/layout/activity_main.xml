@@ -76,13 +76,13 @@
     </com.allever.videoeditordemo.MyHScrollview>
 
 
-    <com.allever.videoeditordemo.TimeLineView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/id_time_line_view_single"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginStart="100dp"/>
+    <!--<com.allever.videoeditordemo.TimeLineView-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:id="@+id/id_time_line_view_single"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="66dp"-->
+            <!--android:layout_marginLeft="100dp"-->
+            <!--android:layout_marginStart="100dp"/>-->
 
 </LinearLayout>
