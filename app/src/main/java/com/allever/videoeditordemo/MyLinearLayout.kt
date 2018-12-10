@@ -42,6 +42,11 @@ class MyLinearLayout : LinearLayout {
 
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        Log.d(TAG, "onSizeChanged()")
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val result = super.onTouchEvent(event)
         Log.d(TAG, "onTouchEvent() return $result")

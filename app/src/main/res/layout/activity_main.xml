@@ -24,13 +24,13 @@
 
     <com.allever.videoeditordemo.MyHScrollview
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:background="#22cccccc">
 
-        <com.allever.videoeditordemo.MyRelativeLayout android:layout_width="wrap_content"
+        <com.allever.videoeditordemo.MyRelativeLayout android:layout_width="match_parent"
                                                       android:layout_height="match_parent"
                                                       android:clipChildren="false"
                                                       android:clipToPadding="false"
@@ -44,14 +44,14 @@
                                                         android:clipChildren="false"
                                                         android:clipToPadding="false"
                                                         android:layout_centerVertical="true"
+                                                        android:layout_marginLeft="100dp"
+                                                        android:layout_marginStart="100dp"
             >
                 <com.allever.videoeditordemo.TimeLineView
                         android:layout_gravity="center_vertical"
                         android:id="@+id/id_time_line_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="66dp"
-                        android:layout_marginLeft="100dp"
-                        android:layout_marginStart="100dp"/>
+                        android:layout_height="66dp"/>
 
 
                 <com.allever.videoeditordemo.TimeLineView
@@ -73,8 +73,16 @@
                         android:layout_height="66dp"/>
             </com.allever.videoeditordemo.MyLinearLayout>
         </com.allever.videoeditordemo.MyRelativeLayout>
-
-
     </com.allever.videoeditordemo.MyHScrollview>
+
+
+    <com.allever.videoeditordemo.TimeLineView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/id_time_line_view_single"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"/>
 
 </LinearLayout>

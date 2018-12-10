@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -132,7 +133,15 @@ class TimeLineView @JvmOverloads constructor(
                             lp.width = width.toInt()
                             mContentContainer?.layoutParams = lp
                             //修改控件位置
-                            modifyMarginStart(offsetX.toInt())
+//                            modifyMarginStart(this, offsetX.toInt())
+
+                            //修改父控件MarginStart
+                            val parent = parent as? ViewGroup
+                            val parentLp = parent?.layoutParams as? MarginLayoutParams
+                            val marginStart = parentLp?.leftMargin ?: 0
+                            Log.d(TAG, "parent margin Start = $marginStart")
+                            modifyMarginStart(parent,offsetX.toInt() )
+
                         }
 
                         mLastRawX = currentRawX
@@ -173,19 +182,22 @@ class TimeLineView @JvmOverloads constructor(
     /***
      * 修改控件的marginStart
      */
-    private fun modifyMarginStart(marginStartOffsetX:Int){
-        val thisLp = layoutParams as? LinearLayout.LayoutParams ?: return
+    private fun modifyMarginStart(view: View?, marginStartOffsetX:Int){
+        val lp = view?.layoutParams as? MarginLayoutParams ?: return
+        var marginStart = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
             //修改控件位置
-            val marginStart = (thisLp.marginStart  + marginStartOffsetX)
+            marginStart = (lp.marginStart  + marginStartOffsetX)
             Log.d(TAG, "marginStartOffsetX = $marginStartOffsetX")
-            thisLp.marginStart = marginStart
+            lp.marginStart = marginStart
         }else{
-            val marginStart = (thisLp.leftMargin  + marginStartOffsetX)
-            thisLp.leftMargin = marginStart
+            marginStart = (lp.leftMargin  + marginStartOffsetX)
+            lp.leftMargin = marginStart
         }
 
-        layoutParams = thisLp
+        Log.d(TAG, "marginStart = $marginStart")
+
+        view.layoutParams = lp
 
     }
 
