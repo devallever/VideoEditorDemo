@@ -1,5 +1,7 @@
 package com.allever.videoeditordemo
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -12,9 +14,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.Scroller
+import org.greenrobot.eventbus.EventBus
 
 class TimeLineView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -31,8 +36,11 @@ class TimeLineView @JvmOverloads constructor(
 
     private var mBackground: Drawable? = null
 
+    private var mScroller: Scroller? = null
+
     init {
         initView()
+        mScroller = Scroller(context, DecelerateInterpolator())
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -56,6 +64,15 @@ class TimeLineView @JvmOverloads constructor(
 
 
     }
+
+    override fun computeScroll() {
+        super.computeScroll()
+        if(mScroller?.computeScrollOffset() == true) {
+            scrollTo(mScroller?.currX ?:0,0)
+            invalidate()
+        }
+    }
+
 
     private var mShowFrame = false
     override fun onClick(v: View?) {
@@ -131,7 +148,7 @@ class TimeLineView @JvmOverloads constructor(
                     MotionEvent.ACTION_MOVE -> {
                         val currentRawX = event.rawX
                         val offsetX = currentRawX - mLastRawX
-
+                        Log.d(TAG, "mIvStart offsetX = $offsetX")
 //                        //修改控件内容器宽度
                         val containerWidth = mContentContainer?.width
                         val lp = mContentContainer?.layoutParams
@@ -166,6 +183,56 @@ class TimeLineView @JvmOverloads constructor(
                             modifyMarginStart(parent,offsetX.toInt() )
                         }
                         mLastRawX = currentRawX
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        val currentRawX = event.rawX
+                        //判断， 并返回中间位置，动画效果
+                        val parent = parent as? ViewGroup
+                        val parentLp = parent?.layoutParams as? MarginLayoutParams
+                        val marginLeft = parentLp?.leftMargin ?: 0
+                        Log.d(TAG, "onTouch() action up marginLeft = $marginLeft")
+                        val screenWidth = DeviceUtil.getScreenWidthPx(context)
+                        Log.d(TAG, "onTouch action up screenWidth $screenWidth")
+
+                        val halfScreenWidth = screenWidth * 0.5f
+
+                        val isLeftTranslation = (mLastRawX - currentRawX) > 0
+                        if (!isLeftTranslation){
+                            //右移
+                            if (marginLeft > halfScreenWidth){
+                                //动画滚动到中间
+                                Log.d(TAG, "action up 动画滚动到中间")
+
+
+
+//                                val timeLineViewEvent = TimeLineViewEvent()
+//                                timeLineViewEvent.fromX = marginLeft
+//                                timeLineViewEvent.toX = halfScreenWidth.toInt()
+//                                EventBus.getDefault().post(timeLineViewEvent)
+
+
+//                                val anim = ObjectAnimator.ofInt(parentLp, "leftMargin", marginLeft, halfScreenWidth.toInt())
+//                                anim.addUpdateListener {
+//                                    val value = it.animatedValue as Int
+//                                    Log.d(TAG, "action up anim value = $value")
+//                                    parentLp?.leftMargin = value
+//                                    Log.d(TAG, "action up leftMargin value = ${parentLp?.leftMargin}")
+//                                    parent?.layoutParams = parentLp
+//                                }
+//                                anim?.duration = 1000
+//                                anim?.start()
+//
+//                                mLastRawX = halfScreenWidth
+
+//                                parentLp?.leftMargin = halfScreenWidth.toInt()
+//                                mScroller?.startScroll(mScroller?.currX ?:0, 0, halfScreenWidth.toInt(), 0, 500)
+//                                postInvalidate()
+                            }else{
+                                Log.d(TAG, "action up 不需要滚动")
+                            }
+                        }
+
                     }
                 }
             }
@@ -227,6 +294,10 @@ class TimeLineView @JvmOverloads constructor(
         val result = super.onTouchEvent(event)
         Log.d(TAG, "onTouchEvent() return $result")
         return result
+    }
+
+    public interface Callback{
+        fun onScrollToMiddle(fromX: Int, toX: Int)
     }
 
 }

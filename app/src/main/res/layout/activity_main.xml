@@ -22,58 +22,67 @@
             android:id="@+id/id_add_bitmap"
             android:text="add bitmap"/>
 
-    <com.allever.videoeditordemo.MyHScrollview
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="10dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:background="#22cccccc">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="150dp"
+                    android:layout_marginTop="10dp">
 
-        <com.allever.videoeditordemo.MyRelativeLayout android:layout_width="match_parent"
-                                                      android:layout_height="match_parent"
-                                                      android:clipChildren="false"
-                                                      android:clipToPadding="false"
-                                                      android:background="#00bbaa">
+        <!--<com.allever.videoeditordemo.MyView android:layout_width="1dp" android:layout_height="match_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:background="#ff0000"/>-->
 
+        <com.allever.videoeditordemo.MyHScrollview
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:background="#22cccccc">
 
-            <com.allever.videoeditordemo.MyLinearLayout android:layout_width="match_parent"
-                                                        android:orientation="horizontal"
-                                                        android:layout_height="60dp"
-                                                        android:background="#ccaa00"
-                                                        android:clipChildren="false"
-                                                        android:clipToPadding="false"
-                                                        android:layout_centerVertical="true"
-                                                        android:layout_marginLeft="100dp"
-                                                        android:layout_marginStart="100dp"
-            >
-                <com.allever.videoeditordemo.TimeLineView
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/id_time_line_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="66dp"/>
+            <com.allever.videoeditordemo.MyRelativeLayout android:layout_width="match_parent"
+                                                          android:layout_height="match_parent"
+                                                          android:clipChildren="false"
+                                                          android:clipToPadding="false"
+                                                          android:background="#00bbaa">
 
 
-                <com.allever.videoeditordemo.TimeLineView
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/id_time_line_view_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="66dp"
-                        android:layout_marginLeft="-60dp"/>
-                <com.allever.videoeditordemo.TimeLineView
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/id_time_line_view_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="66dp"/>
+                <com.allever.videoeditordemo.MyLinearLayout android:layout_width="match_parent"
+                                                            android:orientation="horizontal"
+                                                            android:layout_height="60dp"
+                                                            android:background="#ccaa00"
+                                                            android:clipChildren="false"
+                                                            android:clipToPadding="false"
+                                                            android:layout_centerVertical="true"
+                                                            android:layout_marginLeft="100dp"
+                                                            android:layout_marginStart="100dp"
+                >
+                    <com.allever.videoeditordemo.TimeLineView
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/id_time_line_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="66dp"/>
 
-                <com.allever.videoeditordemo.TimeLineView
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/id_time_line_view_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="66dp"/>
-            </com.allever.videoeditordemo.MyLinearLayout>
-        </com.allever.videoeditordemo.MyRelativeLayout>
-    </com.allever.videoeditordemo.MyHScrollview>
+
+                    <com.allever.videoeditordemo.TimeLineView
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/id_time_line_view_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="66dp"
+                            android:layout_marginLeft="-60dp"/>
+                    <com.allever.videoeditordemo.TimeLineView
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/id_time_line_view_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="66dp"/>
+
+                    <com.allever.videoeditordemo.TimeLineView
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/id_time_line_view_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="66dp"/>
+                </com.allever.videoeditordemo.MyLinearLayout>
+            </com.allever.videoeditordemo.MyRelativeLayout>
+        </com.allever.videoeditordemo.MyHScrollview>
+    </RelativeLayout>
+
+
 
 
     <!--<com.allever.videoeditordemo.TimeLineView-->

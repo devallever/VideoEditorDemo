@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Scroller
 
 class MainActivity : AppCompatActivity() , View.OnClickListener{
 //
@@ -13,6 +14,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 //    private var videoTimeLine: ListTimeLine? = null
 
     private var mMyView: BitmapContentView? = null
+
+    private var mScroller: Scroller? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,13 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
+        bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
 
         //3
@@ -78,7 +88,9 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
     }
 
     private fun initData(){
+        mScroller = Scroller(this)
 
     }
+
 
 }
