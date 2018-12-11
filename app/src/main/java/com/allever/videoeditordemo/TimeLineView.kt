@@ -301,7 +301,6 @@ class TimeLineView @JvmOverloads constructor(
         }
         //处理滑动冲突，屏蔽父控件拦截onTouch事件
         parent.requestDisallowInterceptTouchEvent(true)
-        Log.d(TAG, "onTouch() return true")
         return true
     }
 
@@ -315,17 +314,11 @@ class TimeLineView @JvmOverloads constructor(
             mIvEnd?.visibility = View.VISIBLE
             mIvStart?.visibility = View.VISIBLE
             mContentContainer?.background = mBackground
-
-            //修改控件位置
-//            modifyMarginStart( - (mIvStart?.width?:0))
-
         }else{
             //隐藏边框
             mIvEnd?.visibility = View.INVISIBLE
             mIvStart?.visibility = View.INVISIBLE
             mContentContainer?.background = null
-
-//            modifyMarginStart(mIvStart?.width?: 0)
         }
     }
 

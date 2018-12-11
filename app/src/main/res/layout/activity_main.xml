@@ -93,7 +93,8 @@
                    android:scaleType="centerInside"
                    android:layout_alignParentEnd="true"
                    android:layout_centerVertical="true"
-                   android:layout_margin="10dp"/>
+                   android:layout_margin="10dp"
+        android:visibility="gone"/>
 
         <com.allever.videoeditordemo.MyView
                 android:layout_width="1dp"
