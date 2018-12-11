@@ -61,13 +61,10 @@ class TimeLineView @JvmOverloads constructor(
 
     private var mBackground: Drawable? = null
 
-    private var mScroller: Scroller? = null
-
     private var mHalfScreenWidth = 0
 
     init {
         initView()
-        mScroller = Scroller(context, DecelerateInterpolator())
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -92,14 +89,6 @@ class TimeLineView @JvmOverloads constructor(
         }
 
 
-    }
-
-    override fun computeScroll() {
-        super.computeScroll()
-        if(mScroller?.computeScrollOffset() == true) {
-            scrollTo(mScroller?.currX ?:0,0)
-            invalidate()
-        }
     }
 
 
@@ -139,25 +128,21 @@ class TimeLineView @JvmOverloads constructor(
 
     }
 
-    private var mOffsetX = 0
-    private var mLastRawX = 0F
-    private var mOriginRawX = 0F
+    private var mLastRawX = 0
+    private var mOriginRawX = 0
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         when(v){
             mIvEnd -> {
                 when(event?.action){
                     MotionEvent.ACTION_DOWN -> {
-                        mOriginRawX = event.rawX
+                        mOriginRawX = event.rawX.toInt()
                         mLastRawX  = mOriginRawX
                     }
 
                     MotionEvent.ACTION_MOVE -> {
-                        val currentRawX = event.rawX
+                        val currentRawX = event.rawX.toInt()
                         val offsetX = currentRawX - mLastRawX
-
-//                        mOffsetX = (currentRawX - mOriginRawX).toInt()
-//                        mOffsetX = offsetX.toInt()
 
                         Log.d(TAG, "offsetX = $offsetX")
 
@@ -172,8 +157,19 @@ class TimeLineView @JvmOverloads constructor(
                         val width = lp?.width!! + offsetX
                         //处理滑动到左边箭头后禁止继续滑动
                         if (width > 0){
-                            lp.width = width.toInt()
+                            lp.width = width
                             mContentContainer?.layoutParams = lp
+
+
+                            //修改控件位置
+//                            modifyMarginStart(this, offsetX.toInt())
+
+                            //修改父控件MarginStart，实现整体左移，不需要修改该控件的位置了
+                            val parent = parent as? ViewGroup
+                            val parentLp = parent?.layoutParams as? MarginLayoutParams
+                            val martinRight = parentLp?.rightMargin ?: 0
+                            Log.d(TAG, "parent margin End = $martinRight")
+                            modifyMarginEnd(parent,-offsetX )
                         }
                         mLastRawX = currentRawX
                     }
@@ -183,12 +179,12 @@ class TimeLineView @JvmOverloads constructor(
             mIvStart -> {
                 when(event?.action){
                     MotionEvent.ACTION_DOWN -> {
-                        mOriginRawX = event.rawX
+                        mOriginRawX = event.rawX.toInt()
                         mLastRawX  = mOriginRawX
                     }
 
                     MotionEvent.ACTION_MOVE -> {
-                        val currentRawX = event.rawX
+                        val currentRawX = event.rawX.toInt()
                         val offsetX = currentRawX - mLastRawX
                         Log.d(TAG, "mIvStart offsetX = $offsetX")
 //                        //修改控件内容器宽度
@@ -212,7 +208,7 @@ class TimeLineView @JvmOverloads constructor(
                                 parent.requestDisallowInterceptTouchEvent(false)
                                 return false
                             }
-                            lp.width = width.toInt()
+                            lp.width = width
                             mContentContainer?.layoutParams = lp
                             //修改控件位置
 //                            modifyMarginStart(this, offsetX.toInt())
@@ -222,7 +218,7 @@ class TimeLineView @JvmOverloads constructor(
                             val parentLp = parent?.layoutParams as? MarginLayoutParams
                             val marginStart = parentLp?.leftMargin ?: 0
                             Log.d(TAG, "parent margin Start = $marginStart")
-                            modifyMarginStart(parent,offsetX.toInt() )
+                            modifyMarginStart(parent,offsetX)
                         }
                         mLastRawX = currentRawX
                     }
@@ -311,6 +307,29 @@ class TimeLineView @JvmOverloads constructor(
         }
 
         Log.d(TAG, "marginStart = $marginStart")
+
+        view.layoutParams = lp
+
+    }
+
+
+    /***
+     * 修改控件的marginStart
+     */
+    private fun modifyMarginEnd(view: View?, marginEndOffsetX:Int){
+        val lp = view?.layoutParams as? MarginLayoutParams ?: return
+        var marginEnd = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            //修改控件位置
+            marginEnd = (lp.marginEnd  + marginEndOffsetX)
+            Log.d(TAG, "marginEndOffsetX = $marginEndOffsetX")
+            lp.marginEnd = marginEnd
+        }else{
+            marginEnd = (lp.rightMargin  + marginEndOffsetX)
+            lp.rightMargin = marginEnd
+        }
+
+        Log.d(TAG, "marginStart = $marginEnd")
 
         view.layoutParams = lp
 

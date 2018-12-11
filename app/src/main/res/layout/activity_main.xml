@@ -22,12 +22,11 @@
             android:id="@+id/id_add_bitmap"
             android:text="add bitmap"/>
 
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="150dp"
-                    android:layout_marginTop="10dp">
+    <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="150dp"
+            android:layout_marginTop="10dp">
 
-        <!--<com.allever.videoeditordemo.MyView android:layout_width="1dp" android:layout_height="match_parent"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:background="#ff0000"/>-->
+
 
         <com.allever.videoeditordemo.MyHScrollview
                 android:id="@+id/id_scroll_view"
@@ -37,22 +36,27 @@
                 android:clipToPadding="false"
                 android:background="#22cccccc">
 
-            <com.allever.videoeditordemo.MyRelativeLayout android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"
-                                                          android:clipChildren="false"
-                                                          android:clipToPadding="false"
-                                                          android:background="#00bbaa">
+            <com.allever.videoeditordemo.MyRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:background="#00bbaa">
 
 
-                <com.allever.videoeditordemo.MyLinearLayout android:layout_width="match_parent"
-                                                            android:orientation="horizontal"
-                                                            android:layout_height="60dp"
-                                                            android:background="#ccaa00"
-                                                            android:clipChildren="false"
-                                                            android:clipToPadding="false"
-                                                            android:layout_centerVertical="true"
-                                                            android:layout_marginLeft="100dp"
-                                                            android:layout_marginStart="100dp"
+                <com.allever.videoeditordemo.MyLinearLayout
+                        android:id="@+id/id_ll_time_line_container"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="60dp"
+                        android:background="#ccaa00"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="180dp"
+                        android:layout_marginStart="180dp"
+                        android:layout_marginEnd="180dp"
+                        android:layout_marginRight="180dp"
                 >
                     <com.allever.videoeditordemo.TimeLineView
                             android:layout_gravity="center_vertical"
@@ -66,7 +70,7 @@
                             android:id="@+id/id_time_line_view_2"
                             android:layout_width="wrap_content"
                             android:layout_height="66dp"
-                            android:layout_marginLeft="-60dp"/>
+                            android:layout_marginLeft="-0dp"/>
                     <com.allever.videoeditordemo.TimeLineView
                             android:layout_gravity="center_vertical"
                             android:id="@+id/id_time_line_view_3"
@@ -81,18 +85,31 @@
                 </com.allever.videoeditordemo.MyLinearLayout>
             </com.allever.videoeditordemo.MyRelativeLayout>
         </com.allever.videoeditordemo.MyHScrollview>
+
+        <ImageView android:layout_width="48dp" android:layout_height="48dp"
+                   android:layout_alignParentRight="true"
+                   android:background="@drawable/import_bg"
+                   android:src="@drawable/add"
+                   android:scaleType="centerInside"
+                   android:layout_alignParentEnd="true"
+                   android:layout_centerVertical="true"
+                   android:layout_margin="10dp"/>
+
+        <com.allever.videoeditordemo.MyView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="#ff0000"/>
     </RelativeLayout>
 
 
-
-
     <!--<com.allever.videoeditordemo.TimeLineView-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:id="@+id/id_time_line_view_single"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="66dp"-->
-            <!--android:layout_marginLeft="100dp"-->
-            <!--android:layout_marginStart="100dp"/>-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:id="@+id/id_time_line_view_single"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="66dp"-->
+    <!--android:layout_marginLeft="100dp"-->
+    <!--android:layout_marginStart="100dp"/>-->
 
 </LinearLayout>
