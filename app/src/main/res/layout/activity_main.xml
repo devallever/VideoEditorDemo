@@ -30,6 +30,7 @@
         <!--android:background="#ff0000"/>-->
 
         <com.allever.videoeditordemo.MyHScrollview
+                android:id="@+id/id_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:clipChildren="false"
