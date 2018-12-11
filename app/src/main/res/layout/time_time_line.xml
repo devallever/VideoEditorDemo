@@ -24,7 +24,7 @@
             android:id="@+id/id_iv_start"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/back"
+            android:src="@drawable/arrow_left"
             android:scaleType="centerInside"
             android:background="#ffffff"
             android:visibility="visible"/>
@@ -33,7 +33,7 @@
             android:id="@+id/id_iv_end"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/back"
+            android:src="@drawable/arrow_right"
             android:scaleType="centerInside"
             android:background="#ffffff"
             android:layout_toRightOf="@+id/id_content_container"
