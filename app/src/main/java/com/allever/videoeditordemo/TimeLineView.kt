@@ -529,4 +529,12 @@ class TimeLineView @JvmOverloads constructor(
         fun onScrollToMiddle(fromX: Int, toX: Int)
     }
 
+    /***
+     * 设置向右移动最大值
+     * -1 ：无限延申
+     */
+    fun setMaxTranslationX(max: Int = -1){
+        mIvEndMaxTranslationX = max
+    }
+
 }
