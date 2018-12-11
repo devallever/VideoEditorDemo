@@ -1,4 +1,4 @@
-<com.allever.videoeditordemo.DragLinearLayout
+<com.allever.videoeditordemo.drag.DragLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -52,4 +52,4 @@
         style="@style/MinimalistButton"/>
 
 
-</com.allever.videoeditordemo.DragLinearLayout>
+</com.allever.videoeditordemo.drag.DragLinearLayout>

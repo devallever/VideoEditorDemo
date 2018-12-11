@@ -1,4 +1,4 @@
-package com.allever.videoeditordemo;
+package com.allever.videoeditordemo.drag;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -26,6 +26,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import com.allever.videoeditordemo.R;
 
 /**
  * A LinearLayout that supports children Views that can be dragged and swapped around.

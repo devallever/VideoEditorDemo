@@ -1,11 +1,11 @@
 package com.allever.videoeditordemo
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Handler
+import android.os.Message
 import android.support.annotation.RequiresApi
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
@@ -19,7 +19,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Scroller
-import org.greenrobot.eventbus.EventBus
 
 class TimeLineView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -27,6 +26,31 @@ class TimeLineView @JvmOverloads constructor(
 
     companion object {
         private val TAG = TimeLineView::class.java.simpleName
+        private const val MESSAGE_SCROLL_TO_SCREEN_MID = 0x01
+        private const val FRAME_COUNT = 30
+    }
+
+    private var mCount = 0
+    private val mHandler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when(msg.what){
+                MESSAGE_SCROLL_TO_SCREEN_MID -> {
+                    mCount++
+                    if (mCount <= FRAME_COUNT){
+                        val parent = parent as? ViewGroup
+                        val frequency = msg.arg1
+                        val message = Message()
+                        message.what = MESSAGE_SCROLL_TO_SCREEN_MID
+                        message.arg1 = frequency
+                        modifyMarginStart(parent, -frequency)
+                        sendMessageDelayed(message, 6)
+                    }else{
+                        mCount = 0
+                    }
+                }
+            }
+        }
     }
 
     private var mRootView: View? = null
@@ -37,6 +61,8 @@ class TimeLineView @JvmOverloads constructor(
     private var mBackground: Drawable? = null
 
     private var mScroller: Scroller? = null
+
+    private var mHalfScreenWidth = 0
 
     init {
         initView()
@@ -56,6 +82,8 @@ class TimeLineView @JvmOverloads constructor(
         mIvEnd?.setOnTouchListener(this)
 
         mBackground = ResourcesCompat.getDrawable(resources, R.drawable.time_line_bg, null)
+
+        mHalfScreenWidth = DeviceUtil.getScreenWidthPx(context)
 
         //
         mIvStart?.post {
@@ -204,30 +232,12 @@ class TimeLineView @JvmOverloads constructor(
                                 //动画滚动到中间
                                 Log.d(TAG, "action up 动画滚动到中间")
 
+                                val msg = Message()
+                                msg.what = MESSAGE_SCROLL_TO_SCREEN_MID
+                                val frequency = (marginLeft - halfScreenWidth) / FRAME_COUNT
+                                msg.arg1 = frequency.toInt()
+                                mHandler.sendMessageDelayed(msg, 30)
 
-
-//                                val timeLineViewEvent = TimeLineViewEvent()
-//                                timeLineViewEvent.fromX = marginLeft
-//                                timeLineViewEvent.toX = halfScreenWidth.toInt()
-//                                EventBus.getDefault().post(timeLineViewEvent)
-
-
-//                                val anim = ObjectAnimator.ofInt(parentLp, "leftMargin", marginLeft, halfScreenWidth.toInt())
-//                                anim.addUpdateListener {
-//                                    val value = it.animatedValue as Int
-//                                    Log.d(TAG, "action up anim value = $value")
-//                                    parentLp?.leftMargin = value
-//                                    Log.d(TAG, "action up leftMargin value = ${parentLp?.leftMargin}")
-//                                    parent?.layoutParams = parentLp
-//                                }
-//                                anim?.duration = 1000
-//                                anim?.start()
-//
-//                                mLastRawX = halfScreenWidth
-
-//                                parentLp?.leftMargin = halfScreenWidth.toInt()
-//                                mScroller?.startScroll(mScroller?.currX ?:0, 0, halfScreenWidth.toInt(), 0, 500)
-//                                postInvalidate()
                             }else{
                                 Log.d(TAG, "action up 不需要滚动")
                             }

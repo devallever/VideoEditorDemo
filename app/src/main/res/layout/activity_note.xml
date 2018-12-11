@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
         <!-- Additional children for this container are added in .NoteActivity#onCreate(). -->
-        <com.allever.videoeditordemo.DragLinearLayout
+        <com.allever.videoeditordemo.drag.DragLinearLayout
             android:id="@+id/noteContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 style="@style/ListHeader" />
 
-        </com.allever.videoeditordemo.DragLinearLayout>
+        </com.allever.videoeditordemo.drag.DragLinearLayout>
 
     </ScrollView>
 

@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
-import com.allever.videoeditordemo.DragLinearLayout;
 import com.allever.videoeditordemo.R;
 
 
