@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.HorizontalScrollView
+import android.widget.ScrollView
 import android.widget.Scroller
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -106,6 +107,12 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun obtainScrollToFirstEvent(event: TimeLineViewScrollToEndEvent){
+        //滚动到底部
+        mScrollerView?.fullScroll(HorizontalScrollView.FOCUS_DOWN)
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun obtainScrollToFirstEvent(event: TimeLineViewEvent){
