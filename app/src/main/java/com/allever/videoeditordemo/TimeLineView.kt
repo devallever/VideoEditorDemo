@@ -65,8 +65,6 @@ class TimeLineView @JvmOverloads constructor(
 
     private var mHalfScreenWidth = 0
 
-    private var mSelected = false
-
     init {
         initView()
         mScroller = Scroller(context, DecelerateInterpolator())
@@ -109,7 +107,6 @@ class TimeLineView @JvmOverloads constructor(
     override fun onClick(v: View?) {
         when (v){
             mRootView -> {
-                mSelected = true
                 val parent = parent as? ViewGroup
                 val childCount = parent?.childCount ?: 0
                 for (i in 0 until childCount){
@@ -117,28 +114,15 @@ class TimeLineView @JvmOverloads constructor(
                     if (child is TimeLineView){
                         if (child.hashCode() == this.hashCode()){
                             //自身
-                            //child.showFrame(true)
-                            if (child.mShowFrame){
-                                Log.d(TAG, "onClick 自身 show frame")
-                            }else{
-                                Log.d(TAG, "onClick 自身 hide frame")
-                            }
                             child.mShowFrame = !child.mShowFrame
                             child.showFrame(child.mShowFrame)
                         }else{
                             //其他
-                            Log.d(TAG, "onClick 其他")
                             child.showFrame(false)
                             child.mShowFrame = false
                         }
                     }
                 }
-
-
-                //debug
-//                mShowFrame = !mShowFrame
-//                showFrame(mShowFrame)
-//                bringToFront()
             }
         }
     }
