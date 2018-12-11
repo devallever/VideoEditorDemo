@@ -14,11 +14,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.Scroller
 import org.greenrobot.eventbus.EventBus
 
 class TimeLineView @JvmOverloads constructor(
@@ -28,6 +26,7 @@ class TimeLineView @JvmOverloads constructor(
     companion object {
         private val TAG = TimeLineView::class.java.simpleName
         private const val MESSAGE_SCROLL_TO_SCREEN_MID = 0x01
+        private const val MESSAGE_AUTO_SCROLL_TO_RIGHT = 0x02
         private const val FRAME_COUNT = 30
     }
 
@@ -49,6 +48,30 @@ class TimeLineView @JvmOverloads constructor(
                     }else{
                         mCount = 0
                     }
+                }
+
+                MESSAGE_AUTO_SCROLL_TO_RIGHT -> {
+                    //修改控件内容器宽度
+                    val containerWidth = mContentContainer?.width
+                    val lp = mContentContainer?.layoutParams
+                    lp?.width = containerWidth
+                    val width = lp?.width!! + 10
+
+                    if (width > mIvStartMaxTranslationX){
+                        return
+                    }
+
+                    lp.width = width
+                    mContentContainer?.layoutParams = lp
+
+                    val parent = parent as? ViewGroup
+                    val parentLp = parent?.layoutParams as? MarginLayoutParams
+                    val martinRight = parentLp?.rightMargin ?: 0
+                    if (martinRight < mHalfScreenWidth){
+                        modifyMarginEnd(parent,10 )
+                    }
+
+                    sendEmptyMessageDelayed(MESSAGE_AUTO_SCROLL_TO_RIGHT, 10)
                 }
             }
         }
@@ -81,7 +104,7 @@ class TimeLineView @JvmOverloads constructor(
 
         mBackground = ResourcesCompat.getDrawable(resources, R.drawable.time_line_bg, null)
 
-        mHalfScreenWidth = DeviceUtil.getScreenWidthPx(context)
+        mHalfScreenWidth = DeviceUtil.getScreenWidthPx(context) / 2
 
         //
         mIvStart?.post {
@@ -161,15 +184,15 @@ class TimeLineView @JvmOverloads constructor(
                             mContentContainer?.layoutParams = lp
 
 
-                            //修改控件位置
-//                            modifyMarginStart(this, offsetX.toInt())
-
-                            //修改父控件MarginStart，实现整体左移，不需要修改该控件的位置了
-                            val parent = parent as? ViewGroup
-                            val parentLp = parent?.layoutParams as? MarginLayoutParams
-                            val martinRight = parentLp?.rightMargin ?: 0
-                            Log.d(TAG, "parent margin End = $martinRight")
-                            modifyMarginEnd(parent,-offsetX )
+//                            //修改控件位置
+////                            modifyMarginStart(this, offsetX.toInt())
+//
+//                            //修改父控件MarginEnd，实现整体右移，不需要修改该控件的位置了
+//                            val parent = parent as? ViewGroup
+//                            val parentLp = parent?.layoutParams as? MarginLayoutParams
+//                            val martinRight = parentLp?.rightMargin ?: 0
+//                            Log.d(TAG, "parent margin End = $martinRight")
+//                            modifyMarginEnd(parent,-offsetX )
                         }
                         mLastRawX = currentRawX
                     }
@@ -197,33 +220,49 @@ class TimeLineView @JvmOverloads constructor(
                         //处理滑动到右边箭头后禁止继续滑动
                         if (width > 0 ){
                             val isLeftTranslation = (mLastRawX - currentRawX) > 0
-//                        if (isLeftTranslation){
-//                            Log.d(TAG, "onTouch() 左移")
-//                        }else{
-//                            Log.d(TAG, "onTouch() 右移")
-//                        }
+
                             //如果是向左移动，需要判断是否超过向左移动的最大值
                             if (isLeftTranslation && width > mIvStartMaxTranslationX){
                                 //左移
                                 parent.requestDisallowInterceptTouchEvent(false)
                                 return false
                             }
-                            lp.width = width
-                            mContentContainer?.layoutParams = lp
-                            //修改控件位置
-//                            modifyMarginStart(this, offsetX.toInt())
 
-                            //修改父控件MarginStart，实现整体左移，不需要修改该控件的位置了
-                            val parent = parent as? ViewGroup
-                            val parentLp = parent?.layoutParams as? MarginLayoutParams
-                            val marginStart = parentLp?.leftMargin ?: 0
-                            Log.d(TAG, "parent margin Start = $marginStart")
-                            modifyMarginStart(parent,offsetX)
+//                            lp.width = width
+//                            mContentContainer?.layoutParams = lp
+
+                            val ivStartLocation = IntArray(2)
+                            mIvStart?.getLocationOnScreen(ivStartLocation)
+                            val ivStartX = ivStartLocation[0]
+                            //如果左箭头移动到左边屏幕边缘，停止移动，向反方向, 即修改you
+                            if (isLeftTranslation && ivStartX < 0){
+                                //自动滚动，即使手指触摸到屏幕但没移动，也能匀速滚动
+                                if (mHandler.hasMessages(MESSAGE_AUTO_SCROLL_TO_RIGHT)) {
+                                    mHandler.removeMessages(MESSAGE_AUTO_SCROLL_TO_RIGHT)
+                                }
+                                mHandler.sendEmptyMessageDelayed(MESSAGE_AUTO_SCROLL_TO_RIGHT, 10)
+
+                            }else{
+
+                                lp.width = width
+                                mContentContainer?.layoutParams = lp
+
+                                //修改父控件MarginStart，实现整体左移，不需要修改该控件的位置了
+                                val parent = parent as? ViewGroup
+                                val parentLp = parent?.layoutParams as? MarginLayoutParams
+                                val marginStart = parentLp?.leftMargin ?: 0
+                                Log.d(TAG, "parent margin Start = $marginStart")
+                                modifyMarginStart(parent,offsetX)
+                            }
+
                         }
                         mLastRawX = currentRawX
                     }
 
                     MotionEvent.ACTION_UP -> {
+                        if (mHandler.hasMessages(MESSAGE_AUTO_SCROLL_TO_RIGHT)) {
+                            mHandler.removeMessages(MESSAGE_AUTO_SCROLL_TO_RIGHT)
+                        }
                         val currentRawX = event.rawX
                         //判断， 并返回中间位置，动画效果
                         val parent = parent as? ViewGroup
