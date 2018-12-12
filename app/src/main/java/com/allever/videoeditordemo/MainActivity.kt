@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+
+        private const val TIME_LINE_VIEW_HEIGHT_DP = 66F
     }
 
     private var mMyView: BitmapContentView? = null
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
     private var mScroller: Scroller? = null
 
     private var mScrollerView: HorizontalScrollView? = null
+
+    private var mTimeLineViewLayout: TimeLineViewLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +58,22 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         findViewById<Button>(R.id.id_add_bitmap).setOnClickListener(this)
 
 
+        mTimeLineViewLayout = findViewById(R.id.id_ll_time_line_container)
+
+
         //1
-        var timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
+//        var timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
+        var timeLineView = TimeLineView(this)
         var bcv = BitmapContentView(this)
         var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
+        mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
 
         //2
-        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_2)
+        timeLineView = TimeLineView(this)
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
         bcv.addData(bitmap)
@@ -72,27 +81,26 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bcv.addData(bitmap)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
+        mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
         //3
-        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_3)
+        timeLineView = TimeLineView(this)
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
+        mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
         //3
-        timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view_4)
+        timeLineView = TimeLineView(this)
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.mipmap.logo)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
         timeLineView.addContentView(bcv)
+        mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
 //        val timeLineView2 = findViewById<TimeLineView>(R.id.id_time_line_view2)
 //        val bcv2 = BitmapContentView(this)

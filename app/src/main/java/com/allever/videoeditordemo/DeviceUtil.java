@@ -72,4 +72,18 @@ public class DeviceUtil {
     }
 
 
+    @JvmStatic
+    public static final int dip2px(@NotNull Context context, float dpValue) {
+        Intrinsics.checkParameterIsNotNull(context, "context");
+        float scale = getScreenDensity(context);
+        return (int)(dpValue * scale + 0.5F);
+    }
+
+    @JvmStatic
+    public static final float getScreenDensity(@NotNull Context context) {
+        Intrinsics.checkParameterIsNotNull(context, "context");
+        return getDisplayMetrics(context).density;
+    }
+
+
 }
