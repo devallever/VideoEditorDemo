@@ -8,10 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.HorizontalScrollView
-import android.widget.ScrollView
-import android.widget.Scroller
+import android.widget.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -68,6 +65,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
+//        timeLineView.setPadding(0,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
@@ -81,6 +79,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bcv.addData(bitmap)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
+//        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
@@ -90,6 +89,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
+//        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
@@ -99,16 +99,27 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bitmap = BitmapFactory.decodeResource(resources, R.mipmap.logo)
         bcv.addData(bitmap)
         bcv.addData(bitmap)
+//        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
 
-//        val timeLineView2 = findViewById<TimeLineView>(R.id.id_time_line_view2)
+//        val timeLineViewSingle = findViewById<TimeLineView>(R.id.id_time_line_view_single)
 //        val bcv2 = BitmapContentView(this)
 //        bcv2.addData(BitmapFactory.decodeResource(resources, R.mipmap.logo))
-//        timeLineView2.addContentView(bcv2)
+//        bcv2.addData(BitmapFactory.decodeResource(resources, R.mipmap.logo))
+//        timeLineViewSingle.addContentView(bcv2)
 
 
-
+//        val iv1 = findViewById<ImageView>(R.id.id_iv_test_1)
+//        val iv2 = findViewById<ImageView>(R.id.id_iv_test_1)
+//
+//        iv1.setOnClickListener {
+//            it.bringToFront()
+//        }
+//
+//        iv2.setOnClickListener {
+//            it.bringToFront()
+//        }
     }
 
     override fun onDestroy() {

@@ -13,12 +13,9 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Scroller
 import org.greenrobot.eventbus.EventBus
 
 class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
-
-    private var mScroller: Scroller? = null
 
     @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
         context,
@@ -70,9 +67,9 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
 
                 MESSAGE_AUTO_SCROLL_TO_RIGHT -> {
                     //修改控件内容器宽度
-                    val contentContainer = mSelectedTimeLineView?.mContentContainer
-                    val containerWidth = contentContainer?.width
-                    val lp = contentContainer?.layoutParams
+                    val contentContainer = mSelectedTimeLineView?.mContentContainer ?: return
+                    val containerWidth = contentContainer.width
+                    val lp = contentContainer.layoutParams
                     lp?.width = containerWidth
                     val width = lp?.width!! + 10
 
@@ -81,7 +78,7 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
                     }
 
                     lp.width = width
-                    contentContainer?.layoutParams = lp
+                    contentContainer.layoutParams = lp
 
                     val parent = parent as? ViewGroup
                     val parentLp = parent?.layoutParams as? MarginLayoutParams
@@ -95,9 +92,9 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
 
                 MESSAGE_AUTO_SCROLL_TO_LEFT -> {
                     //修改控件内容器宽度
-                    val contentContainer = mSelectedTimeLineView?.mContentContainer
-                    val containerWidth = contentContainer?.width
-                    val lp = contentContainer?.layoutParams
+                    val contentContainer = mSelectedTimeLineView?.mContentContainer ?: return
+                    val containerWidth = contentContainer.width
+                    val lp = contentContainer.layoutParams
                     lp?.width = containerWidth
                     val width = lp?.width!! + 10
 
@@ -106,11 +103,8 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
                     }
 
                     lp.width = width
-                    contentContainer?.layoutParams = lp
+                    contentContainer.layoutParams = lp
 
-                    val parent = parent as? ViewGroup
-                    val parentLp = parent?.layoutParams as? MarginLayoutParams
-                    val marginLeft = parentLp?.leftMargin ?: 0
                     modifyMarginStart(-10 )
                     sendEmptyMessageDelayed(MESSAGE_AUTO_SCROLL_TO_LEFT, 10)
                 }
