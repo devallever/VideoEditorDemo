@@ -18,8 +18,7 @@ import android.widget.RelativeLayout
 
 class TimeLineView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : RelativeLayout(context, attrs, defStyleAttr), View.OnClickListener, View.OnTouchListener {
-
+) : RelativeLayout(context, attrs, defStyleAttr), View.OnClickListener, View.OnTouchListener, View.OnLongClickListener {
     companion object {
         private val TAG = TimeLineView::class.java.simpleName
     }
@@ -36,6 +35,8 @@ class TimeLineView @JvmOverloads constructor(
 
     private var mMovingCallback: MovingCallback? = null
 
+    private var mOptionListener: OnOptinListener? = null
+
     init {
         initView()
     }
@@ -44,6 +45,7 @@ class TimeLineView @JvmOverloads constructor(
     private fun initView(){
         val rootView = LayoutInflater.from(context).inflate(R.layout.time_time_line, this, true)
         rootView.setOnClickListener(this)
+//        rootView.setOnLongClickListener(this)
         mRootView = rootView
         mContentContainer = rootView.findViewById(R.id.id_content_container)
         mIvStart = rootView.findViewById(R.id.id_iv_start)
@@ -88,6 +90,12 @@ class TimeLineView @JvmOverloads constructor(
             }
         }
     }
+
+    override fun onLongClick(v: View?): Boolean {
+        mOptionListener?.onLongClick(this)
+        return true
+    }
+
 
     //左箭头移动最大距离，默认为容器的宽度
     var mIvStartMaxTranslationX = -1
@@ -272,6 +280,10 @@ class TimeLineView @JvmOverloads constructor(
         mMovingCallback = movingCallback
     }
 
+    fun setOptionListener(opListener: OnOptinListener){
+        mOptionListener = opListener
+    }
+
     public interface MovingCallback{
         //箭头在可移动区域内移动
         fun onStartMoving(timeLineView: TimeLineView, offsetX: Int, isMoveToLeft: Boolean)
@@ -298,6 +310,11 @@ class TimeLineView @JvmOverloads constructor(
         fun onStartUp(timeLineView: TimeLineView, isLeftTranslation: Boolean)
         fun onEndUp(timeLineView: TimeLineView, isLeftTranslation: Boolean)
 
+    }
+
+    public interface OnOptinListener{
+        fun onClick(timeLineView: TimeLineView)
+        fun onLongClick(timeLineView: TimeLineView)
     }
 
 }

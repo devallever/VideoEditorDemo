@@ -9,13 +9,21 @@ import android.os.Message
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
 import android.util.Log
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
-import org.greenrobot.eventbus.EventBus
+import android.widget.Toast
 
-class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
+//import org.greenrobot.eventbus.EventBus
+
+class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineView.OnOptinListener/*, View.OnDragListener*/ , DragHelper.DragListener{
+    override fun onDragStarted() {
+        Log.d(TAG, "onDragStarted()")
+
+    }
+
+    override fun onDragEnded() {
+        Log.d(TAG, "onDragEnded()")
+    }
 
     @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
         context,
@@ -177,6 +185,8 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
     private fun initView() {
         mScreenWidth = DeviceUtil.getScreenWidthPx(context)
         mHalfScreenWidth = mScreenWidth / 2
+//        setOnDragListener(this)
+//        DragHelper.setupDragSort(this)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -196,8 +206,10 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
     fun addTimeLineView(timeLineView: TimeLineView?, heightDp: Float){
         val lp = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, DeviceUtil.dip2px(context, heightDp))
         lp.gravity = Gravity.CENTER_VERTICAL
+        DragHelper.setupDragSort(timeLineView, this)
         addView(timeLineView?: return, lp)
         timeLineView.setMovingCallback(this)
+        timeLineView.setOptionListener(this)
     }
 
     override fun onStartMoving(timeLineView: TimeLineView, offsetX: Int, isMoveToLeft: Boolean) {
@@ -277,8 +289,8 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
             msg.arg2 = (0 - marginLeft)
             msg.what = MESSAGE_SCROLL_TO_SCREEN_LEFT
             mHandler.sendMessageDelayed(msg, 10)
-            val timeLineViewEvent = TimeLineViewEvent()
-            EventBus.getDefault().post(timeLineViewEvent)
+//            val timeLineViewEvent = TimeLineViewEvent()
+//            EventBus.getDefault().post(timeLineViewEvent)
         }
     }
 
@@ -309,6 +321,46 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback {
             mHandler.sendMessageDelayed(msg, 10)
         }
     }
+
+    override fun onClick(timeLineView: TimeLineView) {
+    }
+
+    override fun onLongClick(timeLineView: TimeLineView) {
+        //drag
+        timeLineView.startDrag(null, View.DragShadowBuilder(timeLineView), null, 0)
+    }
+
+//    private var mIsInDragDestination = false
+//    override fun onDrag(v: View?, dragEvent: DragEvent?): Boolean {
+//        val action = dragEvent?.action
+//        when (action) {
+//            DragEvent.ACTION_DRAG_STARTED -> {
+//                Toast.makeText(context, "开始拖动\n x = " + dragEvent?.x + "\ny = " + dragEvent?.y, Toast.LENGTH_LONG).show()
+//                mIsInDragDestination = false
+//            }
+//            DragEvent.ACTION_DRAG_ENTERED -> {
+//                Toast.makeText(context, "进入目标区域", Toast.LENGTH_LONG).show()
+//                mIsInDragDestination = true
+//            }
+//
+//            DragEvent.ACTION_DRAG_EXITED -> {
+//                Toast.makeText(context, "离开", Toast.LENGTH_LONG).show()
+//                mIsInDragDestination = false
+//            }
+//
+//            DragEvent.ACTION_DROP -> {
+//                Toast.makeText(context, "放手\n x = " + dragEvent.getX() + "\ny = " + dragEvent.getY(), Toast.LENGTH_LONG).show()
+//                val dragView = dragEvent.localState as? View
+//                if (v !== dragView) {
+//                    swapViewGroupChildren(this, v, dragView)
+//                }
+//            }
+//
+//            DragEvent.ACTION_DRAG_LOCATION -> {
+//            }
+//        }
+//        return true
+//    }
 
     private fun modifyMarginStart(marginStartOffsetX:Int){
         val lp = layoutParams as? MarginLayoutParams ?: return
