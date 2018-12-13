@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         mTimeLineViewLayout?.setCallback(this)
 
 
+
         //1
 //        var timeLineView = findViewById<TimeLineView>(R.id.id_time_line_view)
         var timeLineView = TimeLineView(this)
@@ -131,26 +132,29 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
             mDragBitmap.add(firstBitmap)
         }
 
+//        val scrollView = findViewById<MyHScrollview>(R.id.id_scroll_view)
+//        mTimeLineViewLayout?.setContainerScrollView(scrollView)
+
         //initRv
-        mRvDrag = findViewById(R.id.id_drag_rv)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        mRvDrag?.layoutManager = layoutManager
-        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
-            override fun onClick(position: Int?) {
-                mTimeLineViewLayout?.visibility = View.VISIBLE
-                mRvDrag?.visibility = View.GONE
-            }
-
-
-            override fun onLongClick(position: Int?) {
-                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
-            }
-
-        }, this)
-        mRvDrag?.adapter = mDragAdapter
-        mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
-        mItemTouchHelper?.attachToRecyclerView(mRvDrag)
+//        mRvDrag = findViewById(R.id.id_drag_rv)
+//        val layoutManager = LinearLayoutManager(this)
+//        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+//        mRvDrag?.layoutManager = layoutManager
+//        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
+//            override fun onClick(position: Int?) {
+//                mTimeLineViewLayout?.visibility = View.VISIBLE
+//                mRvDrag?.visibility = View.GONE
+//            }
+//
+//
+//            override fun onLongClick(position: Int?) {
+//                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
+//            }
+//
+//        }, this)
+//        mRvDrag?.adapter = mDragAdapter
+//        mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
+//        mItemTouchHelper?.attachToRecyclerView(mRvDrag)
 
 
 //        val timeLineViewSingle = findViewById<TimeLineView>(R.id.id_time_line_view_single)

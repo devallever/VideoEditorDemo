@@ -216,8 +216,8 @@ View.OnLongClickListener{
         timeLineView?: return
         val lp = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, DeviceUtil.dip2px(context, heightDp))
         lp.gravity = Gravity.CENTER_VERTICAL
-//        MyDragHelper.setupDragSort(timeLineView)
-        MyDragHelper.setLongClick(timeLineView, mCallback)
+        MyDragHelper.setupDragSort(timeLineView)
+//        MyDragHelper.setLongClick(timeLineView, mCallback)
         timeLineView.setMovingCallback(this)
         timeLineView.setOptionListener(this)
         addView(timeLineView, lp)
