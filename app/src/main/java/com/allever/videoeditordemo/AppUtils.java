@@ -25,6 +25,9 @@ public class AppUtils {
     private AppUtils() {}
 
     public static void postOnPreDraw(View view, final Runnable runnable) {
+        if (view == null || runnable == null){
+            return;
+        }
         final ViewTreeObserver observer = view.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -39,6 +42,9 @@ public class AppUtils {
     }
 
     public static void setViewLayoutParamsHeight(View view, int height) {
+        if (view == null){
+            return;
+        }
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         layoutParams.height = height;
         view.setLayoutParams(layoutParams);

@@ -15,7 +15,10 @@ import android.widget.Toast
 
 //import org.greenrobot.eventbus.EventBus
 
-class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineView.OnOptinListener/*, View.OnDragListener*/ , DragHelper.DragListener{
+class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineView.OnOptinListener/*, View.OnDragListener*/ , DragHelper.DragListener ,
+View.OnLongClickListener{
+
+
     override fun onDragStarted() {
         Log.d(TAG, "onDragStarted()")
 
@@ -52,6 +55,8 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineVi
 
     private var mHalfScreenWidth = 0
     private var mScreenWidth = 0
+
+    private var mCallback: Callback? = null
 
 
     private var mCount = 0
@@ -203,13 +208,27 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineVi
         return result
     }
 
+    fun setCallback(callback: Callback?){
+        mCallback = callback
+    }
+
     fun addTimeLineView(timeLineView: TimeLineView?, heightDp: Float){
+        timeLineView?: return
         val lp = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, DeviceUtil.dip2px(context, heightDp))
         lp.gravity = Gravity.CENTER_VERTICAL
-        MyDragHelper.setupDragSort(timeLineView)
-        addView(timeLineView?: return, lp)
+//        MyDragHelper.setupDragSort(timeLineView)
+        MyDragHelper.setLongClick(timeLineView, mCallback)
         timeLineView.setMovingCallback(this)
         timeLineView.setOptionListener(this)
+        addView(timeLineView, lp)
+    }
+
+    override fun onLongClick(view: View?): Boolean {
+        val parent = parent as? ViewGroup
+        val index = parent?.indexOfChild(view)
+        Log.d(TAG, "index = $index")
+        mCallback?.onItemLongClick(index)
+        return true
     }
 
     override fun onStartMoving(timeLineView: TimeLineView, offsetX: Int, isMoveToLeft: Boolean) {
@@ -396,5 +415,9 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineVi
         Log.d(TAG, "marginStart = $marginEnd")
 
         layoutParams = lp
+    }
+
+    public interface Callback{
+        fun onItemLongClick(index: Int?)
     }
 }

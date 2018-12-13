@@ -4,16 +4,22 @@ import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.View
 import android.widget.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
-class MainActivity : AppCompatActivity() , View.OnClickListener{
+class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLayout.Callback, DragRVCallBack{
 //
 //    private var textTimeLine: TextTimeLine? = null
 //    private var videoTimeLine: ListTimeLine? = null
@@ -31,6 +37,11 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
     private var mScrollerView: HorizontalScrollView? = null
 
     private var mTimeLineViewLayout: TimeLineViewLayout? = null
+
+    private var mRvDrag: RecyclerView? = null
+    private var mDragAdapter: DragRvAdapter? = null
+    private var mDragBitmap = mutableListOf<Bitmap>()
+    private var mItemTouchHelper: ItemTouchHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +67,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
 
         mTimeLineViewLayout = findViewById(R.id.id_ll_time_line_container)
+        mTimeLineViewLayout?.setCallback(this)
 
 
         //1
@@ -64,10 +76,14 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         var bcv = BitmapContentView(this)
         var bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
-        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
 //        timeLineView.setPadding(0,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
+        var firstBitmap = bcv.getFirst()
+        if (firstBitmap != null){
+            mDragBitmap.add(firstBitmap)
+        }
 
 
         //2
@@ -75,33 +91,67 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
         bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
-        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
 //        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
+        firstBitmap = bcv.getFirst()
+        if (firstBitmap != null){
+            mDragBitmap.add(firstBitmap)
+        }
 
         //3
         timeLineView = TimeLineView(this)
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
-        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
 //        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
+        firstBitmap = bcv.getFirst()
+        if (firstBitmap != null){
+            mDragBitmap.add(firstBitmap)
+        }
 
         //3
         timeLineView = TimeLineView(this)
         bcv = BitmapContentView(this)
         bitmap = BitmapFactory.decodeResource(resources, R.mipmap.logo)
         bcv.addData(bitmap)
-        bcv.addData(bitmap)
+//        bcv.addData(bitmap)
 //        timeLineView.setPadding(-81,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
+        firstBitmap = bcv.getFirst()
+        if (firstBitmap != null){
+            mDragBitmap.add(firstBitmap)
+        }
+
+        //initRv
+        mRvDrag = findViewById(R.id.id_drag_rv)
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        mRvDrag?.layoutManager = layoutManager
+        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
+            override fun onClick(position: Int?) {
+                mTimeLineViewLayout?.visibility = View.VISIBLE
+                mRvDrag?.visibility = View.GONE
+            }
+
+
+            override fun onLongClick(position: Int?) {
+                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
+            }
+
+        }, this)
+        mRvDrag?.adapter = mDragAdapter
+        mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
+        mItemTouchHelper?.attachToRecyclerView(mRvDrag)
+
 
 //        val timeLineViewSingle = findViewById<TimeLineView>(R.id.id_time_line_view_single)
 //        val bcv2 = BitmapContentView(this)
@@ -120,6 +170,43 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 //        iv2.setOnClickListener {
 //            it.bringToFront()
 //        }
+    }
+
+    override fun onMove(from: Int, to: Int) {
+        Log.d(TAG, "onMove from $from to $to")
+
+        synchronized(this) {
+            if (from > to) {
+                val count = from - to
+                for (i in 0 until count) {
+                    Collections.swap(mDragBitmap, from - i, from - i - 1)
+                }
+            }
+            if (from < to) {
+                val count = to - from
+                for (i in 0 until count) {
+                    Collections.swap(mDragBitmap, from + i, from + i + 1)
+                }
+            }
+            mDragAdapter?.setData(mDragBitmap)
+            mDragAdapter?.notifyItemMoved(from, to)
+            mDragAdapter?.show?.clear()
+            mDragAdapter?.show?.put(to, to)
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onItemLongClick(index: Int?) {
+        mRvDrag?.visibility = View.VISIBLE
+        mTimeLineViewLayout?.visibility = View.GONE
+//        mItemTouchHelper?.startDrag(mRvDrag?.getChildViewHolder(mRvDrag?.getChildAt(index?:return)?: return)?: return)
+//        val childView = mRvDrag?.getChildAt(index?:return)
+//        childView?.performLongClick(100f, 100f)
+//        childView?.getLocationOnScreen()
+//        mItemTouchHelper?.startDrag()
+
+        Toast.makeText(this, "拖动$index", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

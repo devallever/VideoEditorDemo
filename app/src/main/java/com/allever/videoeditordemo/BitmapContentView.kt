@@ -73,6 +73,13 @@ class BitmapContentView @JvmOverloads constructor(
         requestLayout()
     }
 
+    fun getFirst(): Bitmap?{
+        if (mBitmapList.isEmpty()){
+            return null
+        }
+        return mBitmapList[0]
+    }
+
 
     /***
      * 单位：dp
