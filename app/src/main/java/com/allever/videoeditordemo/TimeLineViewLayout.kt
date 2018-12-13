@@ -206,7 +206,7 @@ class TimeLineViewLayout : LinearLayout, TimeLineView.MovingCallback, TimeLineVi
     fun addTimeLineView(timeLineView: TimeLineView?, heightDp: Float){
         val lp = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, DeviceUtil.dip2px(context, heightDp))
         lp.gravity = Gravity.CENTER_VERTICAL
-        DragHelper.setupDragSort(timeLineView, this)
+        MyDragHelper.setupDragSort(timeLineView)
         addView(timeLineView?: return, lp)
         timeLineView.setMovingCallback(this)
         timeLineView.setOptionListener(this)
