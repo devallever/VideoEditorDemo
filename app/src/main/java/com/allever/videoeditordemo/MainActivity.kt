@@ -1,9 +1,7 @@
 package com.allever.videoeditordemo
 
-import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.ImageFormat
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
 //        bcv.addData(bitmap)
 //        bcv.addData(bitmap)
 //        bcv.addData(bitmap)
-//        timeLineView.setPadding(-81,0,0,0)
+        timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
         firstBitmap = bcv.getFirst()
@@ -110,7 +108,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
         bcv.addData(bitmap)
 //        bcv.addData(bitmap)
-//        timeLineView.setPadding(-81,0,0,0)
+        timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
         firstBitmap = bcv.getFirst()
@@ -124,7 +122,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         bitmap = BitmapFactory.decodeResource(resources, R.mipmap.logo)
         bcv.addData(bitmap)
 //        bcv.addData(bitmap)
-//        timeLineView.setPadding(-81,0,0,0)
+        timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
         firstBitmap = bcv.getFirst()
@@ -136,25 +134,29 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
 //        mTimeLineViewLayout?.setContainerScrollView(scrollView)
 
         //initRv
-//        mRvDrag = findViewById(R.id.id_drag_rv)
-//        val layoutManager = LinearLayoutManager(this)
-//        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-//        mRvDrag?.layoutManager = layoutManager
-//        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
-//            override fun onClick(position: Int?) {
+        mRvDrag = findViewById(R.id.id_drag_rv)
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        mRvDrag?.layoutManager = layoutManager
+        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
+            override fun onClick(position: Int?) {
+                var childView = mRvDrag?.getChildAt(position!!)
+                mRvDrag?.bringChildToFront(childView)
+//                val holder = mRvDrag?.getChildViewHolder(childView!!)
+//                holder?.itemView?.bringToFront()
 //                mTimeLineViewLayout?.visibility = View.VISIBLE
 //                mRvDrag?.visibility = View.GONE
-//            }
-//
-//
-//            override fun onLongClick(position: Int?) {
-//                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
-//            }
-//
-//        }, this)
-//        mRvDrag?.adapter = mDragAdapter
-//        mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
-//        mItemTouchHelper?.attachToRecyclerView(mRvDrag)
+            }
+
+
+            override fun onLongClick(position: Int?) {
+                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
+            }
+
+        }, this)
+        mRvDrag?.adapter = mDragAdapter
+        mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
+        mItemTouchHelper?.attachToRecyclerView(mRvDrag)
 
 
 //        val timeLineViewSingle = findViewById<TimeLineView>(R.id.id_time_line_view_single)
@@ -164,16 +166,16 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
 //        timeLineViewSingle.addContentView(bcv2)
 
 
-//        val iv1 = findViewById<ImageView>(R.id.id_iv_test_1)
-//        val iv2 = findViewById<ImageView>(R.id.id_iv_test_1)
-//
-//        iv1.setOnClickListener {
-//            it.bringToFront()
-//        }
-//
-//        iv2.setOnClickListener {
-//            it.bringToFront()
-//        }
+        val iv1 = findViewById<ImageView>(R.id.id_iv_test_1)
+        val iv2 = findViewById<ImageView>(R.id.id_iv_test_2)
+
+        iv1.setOnClickListener {
+            it.bringToFront()
+        }
+
+        iv2.setOnClickListener {
+            it.bringToFront()
+        }
     }
 
     override fun onMove(from: Int, to: Int) {

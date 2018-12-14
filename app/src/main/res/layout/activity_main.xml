@@ -48,7 +48,6 @@
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
                         android:layout_height="60dp"
-                        android:background="#ccaa00"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:layout_centerVertical="true"
@@ -98,13 +97,13 @@
                    android:layout_margin="10dp"
                    android:visibility="gone"/>
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/id_drag_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone"
-        />
+        <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/id_drag_rv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:visibility="visible"-->
+        <!--/>-->
 
         <!--<com.allever.videoeditordemo.MyView-->
         <!--android:layout_width="1dp"-->
@@ -124,17 +123,26 @@
     <!--android:layout_marginStart="100dp"/>-->
 
 
-    <!--<FrameLayout android:layout_width="match_parent" android:layout_height="100dp"-->
-    <!--android:layout_marginTop="10dp">-->
-    <!--<ImageView android:layout_width="100dp" android:layout_height="100dp"-->
-    <!--android:id="@+id/id_iv_test_1"-->
-    <!--android:src="@drawable/ic_test"/>-->
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="100dp"
+    android:layout_marginTop="10dp">
+    <ImageView android:layout_width="100dp" android:layout_height="100dp"
+    android:id="@+id/id_iv_test_1"
+    android:src="@drawable/ic_test"/>
 
-    <!--<ImageView android:layout_width="100dp" android:layout_height="100dp"-->
-    <!--android:id="@+id/id_iv_test_2"-->
-    <!--android:src="@drawable/ic_test_2"-->
-    <!--android:layout_marginLeft="80dp"-->
-    <!--android:scaleType="centerCrop"/>-->
-    <!--</FrameLayout>-->
+    <ImageView android:layout_width="100dp" android:layout_height="100dp"
+    android:id="@+id/id_iv_test_2"
+    android:src="@drawable/ic_test_2"
+    android:layout_marginLeft="75dp"
+    android:scaleType="centerCrop"/>
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_drag_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_marginTop="10dp"
+    />
 
 </LinearLayout>

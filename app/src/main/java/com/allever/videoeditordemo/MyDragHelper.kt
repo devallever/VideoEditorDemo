@@ -72,14 +72,14 @@ object MyDragHelper {
                 }
 
                 DragEvent.ACTION_DRAG_ENDED ->{
-//                    view.visibility = View.VISIBLE
+//                    dragView.visibility = View.VISIBLE
 //                    dragView?.visibility = View.VISIBLE
                     if (targetView == dragView) {
                         targetView.visibility = View.VISIBLE
-                        Log.d(TAG, "view == dragState?.view")
+                        Log.d(TAG, "dragView == dragState?.dragView")
                         Log.d(TAG, "set visible")
                     }else{
-                        Log.d(TAG, "view != dragState?.view")
+                        Log.d(TAG, "dragView != dragState?.dragView")
                     }
                 }
 
@@ -97,7 +97,12 @@ object MyDragHelper {
         }
 
         view?.setOnLongClickListener {
+            val shadowViewBuilder = View.DragShadowBuilder(view)
             val dragState = DragState(view)
+            if (view is TimeLineView){
+                view.showFrame(false)
+                view.mShowFrame = false
+            }
             view.startDrag(null, View.DragShadowBuilder(view), dragState, 0)
             true
         }

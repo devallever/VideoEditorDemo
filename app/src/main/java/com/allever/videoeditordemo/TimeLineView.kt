@@ -67,7 +67,7 @@ class TimeLineView @JvmOverloads constructor(
     }
 
 
-    private var mShowFrame = false
+    var mShowFrame = false
     override fun onClick(v: View?) {
         when (v){
             mRootView -> {
