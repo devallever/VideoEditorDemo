@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+<com.allever.videoeditordemo.TimeLineView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:layout_margin="0dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingLeft="-60dp"
+        android:id="@+id/id_item_drag_time_line_view"
+android:layout_gravity="center_vertical"
+android:gravity="center_vertical">
 
-    <ImageView
-            android:layout_width="60dp" android:layout_height="60dp"
-            android:scaleType="centerCrop"
-            android:id="@+id/id_item_drag_iv"/>
-
-</FrameLayout>
+</com.allever.videoeditordemo.TimeLineView>

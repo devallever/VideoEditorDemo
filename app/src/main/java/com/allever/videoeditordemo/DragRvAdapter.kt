@@ -10,14 +10,14 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import java.lang.ref.SoftReference
 import java.util.HashMap
+import kotlin.math.log
 
 class DragRvAdapter: RecyclerView.Adapter<DragRvAdapter.MyViewHolder> {
 
 
-    private var mBitmapList = mutableListOf<Bitmap>()
+    private var mBitmapListList = mutableListOf<MutableList<Bitmap>>()
     private var mCallback: Callback? = null
     private var mContext: Context? = null
 
@@ -25,11 +25,16 @@ class DragRvAdapter: RecyclerView.Adapter<DragRvAdapter.MyViewHolder> {
     private var mDragRVCallBack: DragRVCallBack? = null
     public var show = SparseArray<Int>()
 
-    constructor(context: Context, bitmapList: MutableList<Bitmap>,  callback: Callback, dragRVCallBack: DragRVCallBack?){
+    private var mRecyclerView: RecyclerView? = null
+
+    private var mFocusPosition = 0
+
+    constructor(context: Context, bitmapList: MutableList<MutableList<Bitmap>>,  callback: Callback, dragRVCallBack: DragRVCallBack?, recyclerView: RecyclerView?){
         mCallback = callback
         mContext = context
-        mBitmapList = bitmapList
+        mBitmapListList = bitmapList
         mDragRVCallBack = dragRVCallBack
+        mRecyclerView = recyclerView
     }
 
     init {
@@ -41,22 +46,55 @@ class DragRvAdapter: RecyclerView.Adapter<DragRvAdapter.MyViewHolder> {
         return MyViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = mBitmapList.size
+    override fun getItemCount(): Int = mBitmapListList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val bitmap = mBitmapList[position]
-        holder.imageView?.setImageBitmap(bitmap)
-        holder.imageView?.setOnClickListener {
-            mCallback?.onClick(position)
+        val bitmap = mBitmapListList[position]
+
+        val timeLineView = holder.timeLineView
+
+
+        if (timeLineView?.getContentViewCount() == 0){
+            //add view
+            val bcv = BitmapContentView(mContext)
+            bcv.setData(mBitmapListList[position])
+            timeLineView?.addContentView(bcv)
         }
-        holder.imageView?.setOnLongClickListener { view ->
-            mCallback?.onLongClick(position)
-            true
-        }
+//        else{
+//            timeLineView?.removeAllview()
+//        }
+
+
+        timeLineView?.setOptionListener(object : TimeLineView.OnOptinListener{
+            override fun onClick(timeLineView: TimeLineView) {
+                mFocusPosition = position
+            }
+
+            override fun onLongClick(timeLineView: TimeLineView) {
+                mCallback?.onLongClick(position, holder)
+            }
+
+        })
+
+
+
+
+
+
+
+
+//        holder.imageView?.setImageBitmap(bitmap)
+//        holder.imageView?.setOnClickListener {
+//            mCallback?.onClick(position)
+//        }
+//        holder.imageView?.setOnLongClickListener { view ->
+//            mCallback?.onLongClick(position)
+//            true
+//        }
     }
 
-    fun setData(data: MutableList<Bitmap>){
-        mBitmapList = data
+    fun setData(data: MutableList<MutableList<Bitmap>>){
+        mBitmapListList = data
     }
 
 
@@ -86,14 +124,33 @@ class DragRvAdapter: RecyclerView.Adapter<DragRvAdapter.MyViewHolder> {
             notifyDataSetChanged()
         }
 
-        var imageView: ImageView? = null
+//        var imageView: ImageView? = null
+        var timeLineView: TimeLineView? = null
         init {
-            imageView = itemView.findViewById(R.id.id_item_drag_iv)
+//            imageView = itemView.findViewById(R.id.id_item_drag_iv)
+            timeLineView = itemView.findViewById(R.id.id_item_drag_time_line_view)
+
+            timeLineView?.setOnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    Log.d("focus", "focus has focus")
+                    v?.scaleX = 1.5f
+                    v?.scaleY = 1.5f
+                    mRecyclerView?.invalidate()
+                } else {
+                    v?.scaleX = 1.0f
+                    v?.scaleY = 1.0f
+                    Log.d("focus", "focus has no focus")
+                }
+            }
         }
+    }
+
+    fun getFocusPosition(): Int{
+        return mFocusPosition
     }
 
     public interface Callback{
         fun onClick(position: Int?)
-        fun onLongClick(position: Int?)
+        fun onLongClick(position: Int?, holder: MyViewHolder)
     }
 }

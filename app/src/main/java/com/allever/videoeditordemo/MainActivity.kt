@@ -2,6 +2,7 @@ package com.allever.videoeditordemo
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Rect
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
 
     private var mRvDrag: RecyclerView? = null
     private var mDragAdapter: DragRvAdapter? = null
-    private var mDragBitmap = mutableListOf<Bitmap>()
+    private var mBitmapListList = mutableListOf<MutableList<Bitmap>>()
     private var mItemTouchHelper: ItemTouchHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,10 +80,10 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
 //        timeLineView.setPadding(0,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
-        var firstBitmap = bcv.getFirst()
-        if (firstBitmap != null){
-            mDragBitmap.add(firstBitmap)
-        }
+//        var firstBitmap = bcv.getFirst()
+//        if (firstBitmap != null){
+//            mBitmapListList.add(firstBitmap)
+//        }
 
 
         //2
@@ -97,10 +98,10 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
-        firstBitmap = bcv.getFirst()
-        if (firstBitmap != null){
-            mDragBitmap.add(firstBitmap)
-        }
+//        firstBitmap = bcv.getFirst()
+//        if (firstBitmap != null){
+//            mBitmapListList.add(firstBitmap)
+//        }
 
         //3
         timeLineView = TimeLineView(this)
@@ -111,10 +112,10 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
-        firstBitmap = bcv.getFirst()
-        if (firstBitmap != null){
-            mDragBitmap.add(firstBitmap)
-        }
+//        firstBitmap = bcv.getFirst()
+//        if (firstBitmap != null){
+//            mBitmapListList.add(firstBitmap)
+//        }
 
         //3
         timeLineView = TimeLineView(this)
@@ -125,20 +126,85 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
         timeLineView.setPadding(-162,0,0,0)
         timeLineView.addContentView(bcv)
         mTimeLineViewLayout?.addTimeLineView(timeLineView, TIME_LINE_VIEW_HEIGHT_DP)
-        firstBitmap = bcv.getFirst()
-        if (firstBitmap != null){
-            mDragBitmap.add(firstBitmap)
-        }
+//        firstBitmap = bcv.getFirst()
+//        if (firstBitmap != null){
+//            mBitmapListList.add(firstBitmap)
+//        }
 
 //        val scrollView = findViewById<MyHScrollview>(R.id.id_scroll_view)
 //        mTimeLineViewLayout?.setContainerScrollView(scrollView)
 
         //initRv
+        //数据1
+        var atomBitmapList = mutableListOf<Bitmap>()
+        var bp = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        mBitmapListList.add(atomBitmapList)
+
+        //数据2
+        atomBitmapList = mutableListOf<Bitmap>()
+        bp = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        mBitmapListList.add(atomBitmapList)
+
+        //数据3
+        atomBitmapList = mutableListOf<Bitmap>()
+        bp = BitmapFactory.decodeResource(resources, R.drawable.ic_test_4)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        mBitmapListList.add(atomBitmapList)
+
+        //数据4
+        atomBitmapList = mutableListOf<Bitmap>()
+        bp = BitmapFactory.decodeResource(resources, R.drawable.ic_test_2)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        atomBitmapList.add(bp)
+        mBitmapListList.add(atomBitmapList)
+
+
         mRvDrag = findViewById(R.id.id_drag_rv)
         val layoutManager = LinearLayoutManager(this)
+//        mRvDrag?.setChildDrawingOrderCallback(object :RecyclerView.ChildDrawingOrderCallback{
+//            override fun onGetChildDrawingOrder(childCount: Int, i: Int): Int {
+//                val view = getLayoutManager().getFocusedChild() ?: return mRvDraggetChildDrawingOrder(childCount, i)
+//                val position = indexOfChild(view)
+//
+//                if (position < 0) {
+//                    return super.getChildDrawingOrder(childCount, i)
+//                }
+//                if (i === childCount - 1) {
+//                    return position
+//                }
+//                return if (i === position) {
+//                    childCount - 1
+//                } else super.getChildDrawingOrder(childCount, i)
+//            }
+//
+//        })
+        mRvDrag?.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View,
+                parent: RecyclerView, state: RecyclerView.State
+            ) {
+                Log.d(TAG, "RV getItemOffsets")
+                val pos = parent.getChildLayoutPosition(view)
+                Log.d(TAG, "RV pos = $pos")
+                if (pos == 0) {
+                    outRect.left = DeviceUtil.dip2px(this@MainActivity, 120f)
+                } else if (pos == mBitmapListList.size - 1) {
+                    outRect.right = DeviceUtil.dip2px(this@MainActivity, 120f)
+                }
+            }
+        })
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         mRvDrag?.layoutManager = layoutManager
-        mDragAdapter = DragRvAdapter(this, mDragBitmap, object : DragRvAdapter.Callback{
+        mDragAdapter = DragRvAdapter(this, mBitmapListList, object : DragRvAdapter.Callback{
             override fun onClick(position: Int?) {
                 var childView = mRvDrag?.getChildAt(position!!)
                 mRvDrag?.bringChildToFront(childView)
@@ -149,11 +215,11 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
             }
 
 
-            override fun onLongClick(position: Int?) {
-                Toast.makeText(this@MainActivity, "position = $position",Toast.LENGTH_SHORT).show()
+            override fun onLongClick(position: Int?, holder: DragRvAdapter.MyViewHolder) {
+                mItemTouchHelper?.startDrag(holder)
             }
 
-        }, this)
+        }, this, mRvDrag)
         mRvDrag?.adapter = mDragAdapter
         mItemTouchHelper = ItemTouchHelper(DragItemCallBack(this))
         mItemTouchHelper?.attachToRecyclerView(mRvDrag)
@@ -185,16 +251,16 @@ class MainActivity : AppCompatActivity() , View.OnClickListener, TimeLineViewLay
             if (from > to) {
                 val count = from - to
                 for (i in 0 until count) {
-                    Collections.swap(mDragBitmap, from - i, from - i - 1)
+                    Collections.swap(mBitmapListList, from - i, from - i - 1)
                 }
             }
             if (from < to) {
                 val count = to - from
                 for (i in 0 until count) {
-                    Collections.swap(mDragBitmap, from + i, from + i + 1)
+                    Collections.swap(mBitmapListList, from + i, from + i + 1)
                 }
             }
-            mDragAdapter?.setData(mDragBitmap)
+            mDragAdapter?.setData(mBitmapListList)
             mDragAdapter?.notifyItemMoved(from, to)
             mDragAdapter?.show?.clear()
             mDragAdapter?.show?.put(to, to)

@@ -10,17 +10,20 @@
         android:background="#1b1b1b"
         android:orientation="vertical"
         android:clipChildren="false"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+android:layout_gravity="center_vertical">
 
     <com.allever.videoeditordemo.BitmapContentView
             android:id="@+id/id_my_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#22ff0000"/>
+            android:background="#22ff0000"
+    android:visibility="gone"/>
 
     <Button android:layout_width="match_parent" android:layout_height="wrap_content"
             android:id="@+id/id_add_bitmap"
-            android:text="add bitmap"/>
+            android:text="add bitmap"
+    android:visibility="gone"/>
 
     <RelativeLayout
             android:layout_width="match_parent" android:layout_height="150dp"
@@ -94,7 +97,7 @@
                    android:scaleType="centerInside"
                    android:layout_alignParentEnd="true"
                    android:layout_centerVertical="true"
-                   android:layout_margin="10dp"
+                   android:layout_margin="20dp"
                    android:visibility="gone"/>
 
         <!--<android.support.v7.widget.RecyclerView-->
@@ -137,12 +140,16 @@
     </RelativeLayout>
 
 
-    <android.support.v7.widget.RecyclerView
+    <com.allever.videoeditordemo.ScaleRecyclerView
             android:id="@+id/id_drag_rv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="66dp"
             android:visibility="visible"
             android:layout_marginTop="10dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:background="#2288ff"
+            android:layout_gravity="center_vertical"
     />
 
 </LinearLayout>

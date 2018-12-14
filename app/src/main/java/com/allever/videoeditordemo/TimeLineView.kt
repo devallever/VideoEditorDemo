@@ -44,10 +44,12 @@ class TimeLineView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     private fun initView(){
         val rootView = LayoutInflater.from(context).inflate(R.layout.time_time_line, this, true)
-        rootView.setOnClickListener(this)
+//        rootView.setOnClickListener(this)
 //        rootView.setOnLongClickListener(this)
         mRootView = rootView
         mContentContainer = rootView.findViewById(R.id.id_content_container)
+        mRootView?.setOnClickListener(this)
+        mRootView?.setOnLongClickListener(this)
         mIvStart = rootView.findViewById(R.id.id_iv_start)
         mIvEnd = rootView.findViewById(R.id.id_iv_end)
 
@@ -87,13 +89,33 @@ class TimeLineView @JvmOverloads constructor(
                         }
                     }
                 }
+                mOptionListener?.onClick(this)
+            }
+        }
+    }
+
+
+    private fun hideAllFrame(){
+        val parent = parent as? ViewGroup
+        val childCount = parent?.childCount ?: 0
+        for (i in 0 until childCount){
+            val child = parent?.getChildAt(i)
+            if (child is TimeLineView){
+                child.showFrame(false)
+                child.mShowFrame = false
             }
         }
     }
 
     override fun onLongClick(v: View?): Boolean {
         mOptionListener?.onLongClick(this)
-        return true
+        when(v){
+            mRootView ->{
+                hideAllFrame()
+                return true
+            }
+        }
+        return false
     }
 
 
@@ -247,6 +269,18 @@ class TimeLineView @JvmOverloads constructor(
 
     fun addContentView(view: View?){
         mContentContainer?.addView(view)
+    }
+
+    fun removeContentView(view: View?){
+        mContentContainer?.removeView(view)
+    }
+
+    fun removeAllview(){
+        mContentContainer?.removeAllViews()
+    }
+
+    fun getContentViewCount(): Int{
+        return mContentContainer?.childCount?: 0
     }
 
     fun showFrame(show: Boolean = false){
